@@ -1,15 +1,8 @@
-// This #include statement was automatically added by the Particle IDE.
-#include "Firebase.h"
 #include "Particle.h"
-
 #include "ArduinoJson.h"
-// Test Program #3 for Firebase Integration
-// Reads data from the database and prints it to the debug serial port
-
-// Requires the SparkJson library:
-// https://github.com/menan/SparkJson
-
 #include "Firebase.h"
+
+Firebase *firebase;
 
 int bluePin = D0;
 int redPin = D1;
@@ -19,23 +12,18 @@ int g;
 int b;
 int d;
 
-Firebase *firebase;
-
-// Forward declarations
-void getDataHandler(const char *topic, const char *data);
-
-
 const unsigned long CHECK_PERIOD_MS = 10000;
 const unsigned long FIRST_CHECK_MS = 5000;
 
 unsigned long lastPublish = FIRST_CHECK_MS - CHECK_PERIOD_MS;
 
 void setup() {
-    firebase = new Firebase("test3rdata");
 	Serial.begin(9600);
-// 	Particle.subscribe("hook-response/test3rdata", getDataHandler, MY_DEVICES);
+
+    firebase = new Firebase("test3rdata");
     firebase->subscribe();
     firebase->setCallback(readCallback);
+
     pinMode(redPin, OUTPUT);
     pinMode(greenPin, OUTPUT);
     pinMode(bluePin, OUTPUT);
